@@ -40,6 +40,9 @@ INSTALLED_APPS = [
 
     # applications
     'accounting.apps.AccountingConfig',
+
+    # third-party applications
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +130,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # DJANGO USER MODEL CONFIGURATION
 AUTH_USER_MODEL = 'accounting.User'
+
+# REST API JWT CONF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+}
