@@ -260,5 +260,6 @@ GitHub.sublime-settings
 # migration files & db.sqlite3
 db.sqlite3
 migrations/
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Python,Django,PyCharm,SublimeText
 
