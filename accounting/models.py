@@ -23,33 +23,53 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         return self.is_superuser
 
+    @property
+    def is_admin(self):
+        return self.role == helpers.ADMIN
 
-# class InternProxy(User):
-#     base_role = helpers.INTERN
-#     objects = managers.InternManager()
 
-#     class Meta:
-#         proxy = True
+class InternProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-#     # model methods here!
-#     # get work_logs and so on ...
+    first_name = models.CharField(null=True, blank=True, max_length=132)
+    last_name = models.CharField(null=True, blank=True, max_length=132)
+    personality_type = models.CharField(null=True, blank=True, max_length=4)
+    intern_code = models.CharField(null=True, blank=True, max_length=7)
+    picture = models.ImageField(null=True, blank=True)
+    emergency_phone = models.CharField(max_length=15, null=True, blank=True)
+    home_number = models.CharField(max_length=15, null=True, blank=True)  # make it unique later
+    gender = models.BooleanField(null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    birth_date = models.DateTimeField(null=True, blank=True)
+    city = models.CharField(max_length=40)  # محل صدور شناسنامه
+    military_service = models.CharField(choices=helpers.MILITARY_STATUS_CHOICES, max_length=80)  # وضعیت خدمت
+    national_code = models.PositiveIntegerField(null=True, blank=True)  # add validation year / make it unique later
+    email = models.EmailField(null=True, blank=True)
+    marital = models.BooleanField(default=False, null=True, blank=True)
 
-# class InternProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     emergency_phone = models.CharField(max_length=15, null=True, blank=True)
-#     home_number = models.CharField(max_length=15, null=True, blank=True)  # make it unique later
-#     fullname = models.CharField(max_length=80)
-#     address = models.TextField(null=True, blank=True)
-#     gender = models.BooleanField(null=True, blank=True)
-#     birth_date = models.DateTimeField(null=True, blank=True)
-#     city = models.CharField(max_length=40)  # محل صدور شناسنامه
-#     military_service = models.CharField(choices=helpers.MILITARY_STATUS_CHOICES, max_length=80)  # وضعیت خدمت
-#     national_code = models.PositiveIntegerField(null=True, blank=True)  # add validation year / make it unique later
-#     email = models.EmailField(null=True, blank=True)
-#     marital = models.BooleanField(default=False, null=True, blank=True)
 
-#     def __str__(self):
-#         return self.fullname
+    def __str__(self):
+        return f'{self.first_name}-{self.last_name}-{self.user.get_role_display()}'
+
+
+class InternProxy(User):
+    base_role = helpers.INTERN
+    objects = managers.InternManager()
+
+    class Meta:
+        proxy = True
+
+    # def save(self, *args, **kwargs):
+    #     if not args[0].role == helpers.INTERN:
+    #         raise ValidationError('"User" object must have "intern" role.')
+
+    #     user = InternProfile.objects.create(user=user, **kwargs)
+    #     user.save()
+    #     return user
+
+    # model methods here!
+    # get work_logs and so on ...
+
 
 
 # class EducationInfo(models.Model):
