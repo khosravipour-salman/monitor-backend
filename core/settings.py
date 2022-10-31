@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # third-party applications
     'rest_framework',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -131,9 +132,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # DJANGO USER MODEL CONFIGURATION
 AUTH_USER_MODEL = 'accounting.User'
 
-# REST API JWT CONF
+# REST API AUTH CONF
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+}
+
+# REST API JWT CONF
+from django.utils.timezone import timedelta
+
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True
 }
