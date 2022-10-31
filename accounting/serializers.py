@@ -24,6 +24,3 @@ class InternRegisterSerializer(serializers.Serializer):
 		intern_obj = InternProxy.objects.create(user, **validated_data)
 
 		return intern_obj
-
-
-

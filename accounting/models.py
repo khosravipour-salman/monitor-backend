@@ -59,14 +59,6 @@ class InternProxy(User):
     class Meta:
         proxy = True
 
-    # def save(self, *args, **kwargs):
-    #     if not args[0].role == helpers.INTERN:
-    #         raise ValidationError('"User" object must have "intern" role.')
-
-    #     user = InternProfile.objects.create(user=user, **kwargs)
-    #     user.save()
-    #     return user
-
     # model methods here!
     # get work_logs and so on ...
 
